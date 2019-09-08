@@ -4,28 +4,6 @@
 
 class Order {
 
-public:
-	enum Currency {
-		USD_CAD,
-		EUR_USD,
-		USD_GBP,
-		USD_JPY,
-		USD_CHF
-	};
-
-	enum Cpty {
-		JPM,
-		HSBC,
-		GS,
-		BAML
-	};
-
-	enum OrderEvent {
-		ACCEPT,
-		FILL,
-		PARTIAL_FILL
-	};
-
 private:
 
 	const std::string m_ticker;
@@ -49,6 +27,22 @@ public:
 	void printOrder() const;
 
 	void fillOrder(int fillAmount);
+
+	std::string getSide();
+
+	int getLevel();
+
+	int getNotional();
+
+	time_t getArriveTime();
+
+	void setID(std::string ID);
+	
+
+	//bool operator <(Order orderObj) const
+	//{
+	//	return m_level < orderObj.getLevel;
+	//}
 
 };
 

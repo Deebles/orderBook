@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Order.h"
+#include "orderBook.h"
 #include<string>
 #include <chrono>
 int main()
@@ -27,6 +28,11 @@ int main()
 	
 	testOrder.printOrder();
 
-	return 0;
+	OrderBook orderBook("LMCADS03", 10);
 
-}
+	orderBook.addOrder( &testOrder);
+
+	orderBook.printOrderBook();
+
+	return 0;
+ }
