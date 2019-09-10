@@ -7,7 +7,6 @@ class OrderBook{
 private:
 	const std::string m_ticker;
 	const int m_tickSize;
-
 	std::list<Order*> bidStack;
 	std::list<Order*> offerStack;
 
@@ -17,6 +16,5 @@ public:
 	// void assignOrderID(); Should I assign this when the order is instantiated?
 	//void fillOrder();
 	void printOrderBook();
-
 };
 

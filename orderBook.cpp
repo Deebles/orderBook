@@ -29,11 +29,13 @@ void OrderBook::printOrderBook() {
 	std::cout << "-----------------------------------------" << std::endl;
 	for (auto const i : bidStack) {
 		i -> printOrder();
+		std::cout << "-----------------------------------------" << std::endl;
 	}
 	std::cout << "-----------------------------------------" << std::endl;
 	std::cout << "-----------------------------------------" << std::endl;
 	for (auto const & i: offerStack) {
 		std::cout << i -> getLevel() << std::endl;
+		std::cout << "-----------------------------------------" << std::endl;
 	}
 }
 
