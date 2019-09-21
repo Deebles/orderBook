@@ -18,6 +18,9 @@ int main()
 	const std::vector<std::string> tickerList = { "XAU/USD", "XAG/USD" };
 	const std::vector<std::string> cptyList = { "JPM", "ML", "BAML", "GS", "NOM", "DB" };
 	const std::vector<std::string> sideList = { "buy", "sell" };
+	std::chrono::system_clock::time_point timePoint = std::chrono::system_clock::now();
+
+	OrderBook orderBook("XAU/USD", 10);
 
 	std::cin >> randFlag;
 	if (randFlag == "n") {
@@ -33,23 +36,23 @@ int main()
 		std::cin >> origAmt;
 	}
 	else if (randFlag == "y") {
-		ticker = tickerList[std::rand() % (tickerList.end() - tickerList.begin())];
-		counterparty = cptyList[std::rand() % (cptyList.end() - cptyList.begin())];
-		side = sideList[std::rand() % (sideList.end() - sideList.begin())];
-		origAmt = std::rand();
-		level = std::rand();
-
+		int numberOfOrders;
+		std::cout << "How many orders to you want to generate?" << std::endl;
+		std::cin >> numberOfOrders;
+		int ID=0;
+		while (ID < numberOfOrders) {
+			ticker = tickerList[std::rand() % (tickerList.end() - tickerList.begin())];
+			counterparty = cptyList[std::rand() % (cptyList.end() - cptyList.begin())];
+			side = sideList[std::rand() % (sideList.end() - sideList.begin())];
+			origAmt = std::rand() % 10000;
+			level = std::rand() % 100;
+			time_t arriveTime = std::chrono::system_clock::to_time_t(timePoint);
+			Order order(ticker, counterparty, level, arriveTime, side, origAmt);
+			order.printOrder();
+			orderBook.addOrder(order);
+			ID++;
+		}
 	}
-
-	std::chrono::system_clock::time_point timePoint = std::chrono::system_clock::now();
-	time_t arriveTime = std::chrono::system_clock::to_time_t(timePoint);
-
-	Order testOrder(ticker, counterparty, level, arriveTime, side, origAmt);
-
-	OrderBook orderBook("XAU/USD", 10);
-
-	orderBook.addOrder( &testOrder);
-
 	orderBook.printOrderBook();
 
 	return 0;

@@ -20,7 +20,7 @@ void Order::fillOrder(int fillAmount) {
 	m_notional = m_notional - fillAmount;
 }
 
-void Order::printOrder() const 
+void Order::printOrder() 
 	{
 	std::cout << m_level << "\t" << m_notional << "\t" << m_cpty << "\t" << m_id << std::endl;
 	}

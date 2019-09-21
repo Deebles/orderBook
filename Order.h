@@ -24,12 +24,11 @@ public:
 		int notional = 0
 		);
 
-	void printOrder() const;
+	void printOrder();
 	void fillOrder(int fillAmount);
 	std::string getSide();
 	int getLevel();
 	int getNotional();
 	time_t getArriveTime();
-	void setID(std::string ID);
 };
 
