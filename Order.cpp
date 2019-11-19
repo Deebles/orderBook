@@ -1,17 +1,21 @@
 #include "Order.h"
 #include <iostream>
-#include <ctime>
+#include <iomanip>
+#include <chrono>
+//#include <ctime>
 
 Order::Order(
+	std::string orderType,
 	std::string ticker,
 	std::string cpty,
 	int level,
-	time_t arriveTime,
+	time_stamp arriveTime,
 	std::string side,
 	int notional):
+	m_orderType(orderType),
 	m_ticker(ticker), 
-	m_cpty(cpty), 
-	m_level(level), 
+	m_cpty(cpty),
+	m_level(level),
 	m_arriveTime(arriveTime), 
 	m_side(side), 
 	m_notional(notional){}
@@ -22,7 +26,9 @@ void Order::fillOrder(int fillAmount) {
 
 void Order::printOrder() 
 	{
-	std::cout << m_level << "\t" << m_notional << "\t" << m_cpty << "\t" << m_id << std::endl;
+	//std::time_t printableArrivalTime = std::chrono::system_clock::to_time_t(m_arriveTime);
+	std::cout << m_level << " | " << m_orderType << " | " << m_ticker << " | " << m_cpty << " | ";
+	std::cout /*<< m_arriveTime << " | " */ << m_side << " | " << m_notional << std::endl;
 	}
 
 std::string Order::getSide()
@@ -30,14 +36,23 @@ std::string Order::getSide()
 	return m_side;
 }
 
-int Order::getLevel() {
-	return m_level;
-}
-
 int Order::getNotional() {
 	return m_notional;
 }
 
-time_t Order::getArriveTime() {
+void Order::setNotional(int notional) {
+	m_notional = notional;
+}
+
+int Order::getLevel() {
+	return m_level;
+}
+
+std::string Order::getOrderType() {
+	return m_orderType;
+}
+
+time_stamp Order::getArriveTime() {
 	return m_arriveTime;
 }
+
