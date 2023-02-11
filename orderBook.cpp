@@ -1,5 +1,4 @@
 #include "orderBook.h"
-#include "Order.h"
 #include <iostream>
 #include <algorithm>
 
@@ -11,14 +10,20 @@ OrderBook::OrderBook(
 	m_ticker(ticker),
 	m_tickSize(tickSize),
 	m_maxBid(maxBid),
-	m_minOffer(minOffer){}
+	m_minOffer(minOffer)
+{}
+
+void OrderBook::addCounterparty(Counterparty cpty) {
+
+	m_counterpartyList.push_back(cpty);
+}
 
 void OrderBook::addLimitOrder(Order order) {	
 	//Add order and sort the stacks by level and ordertime
 	if (order.getSide() == "buy") {
 		bidStack.push_back(order);
 		if (bidStack.size() > 1) {
-			bidStack.sort([](Order & order1, Order & order2) {
+			bidStack.sort([](Order& order1, Order& order2) {
 				if (order1.getLevel() == order2.getLevel())
 					return order2.getArriveTime() > order1.getArriveTime();
 				return order1.getLevel() > order2.getLevel();
@@ -29,7 +34,7 @@ void OrderBook::addLimitOrder(Order order) {
 	else if (order.getSide() == "sell") {
 		offerStack.push_back(order);
 		if (offerStack.size() > 1) {
-			offerStack.sort([](Order & order1, Order & order2) {
+			offerStack.sort([](Order& order1, Order& order2) {
 				if (order1.getLevel() == order2.getLevel())
 					return order2 < order1;
 				return order1.getLevel() > order2.getLevel();
@@ -83,11 +88,13 @@ void OrderBook::printOrderBook() {
 void OrderBook::setMaxBid() {
 	if (bidStack.size() > 0)
 		m_maxBid = bidStack.back().getLevel();
+	else m_maxBid = 1800; //Starting bid
 }
 
 void OrderBook::setMinOffer() {
 	if (offerStack.size() > 0)
 		m_minOffer = offerStack.front().getLevel();
+	else m_minOffer = 1705; ///starting offer
 }
 
 int OrderBook::getMaxBid() {
@@ -98,4 +105,10 @@ int OrderBook::getMinOffer() {
 	return m_minOffer;
 }
 
+std::list<Order> OrderBook::getBidStack(){
+	return bidStack;
+}
 
+std::list<Order> OrderBook::getOfferStack() {
+	return offerStack;
+}

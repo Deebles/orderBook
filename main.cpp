@@ -1,75 +1,45 @@
+#include <string>
+#include <algorithm>
+#include <vector>
 #include <iostream>
 #include "Order.h"
 #include "orderBook.h"
-#include <string>
-#include <chrono>
-#include <vector>
+#include "Counterparty.h"
 
 int main()
 {
-	std::string orderType;
-	std::string ticker;
+
+	/*list of stuff I want to do
+	1. Create an exchange/OrderBook
+	2. Main can create counterparties
+	3. Orderbook to accept counterparties on this exchange
+	4. Counterparties can see Orderbook and
+	5. Counterparties can place orders on exchange
+	6. Orderbook can accpet orders
+	7. Orderbook can fill orders*/
+
 	std::string counterparty;
-	std::string side;
-	int level;
-	int origAmt;
-	std::string randFlag;
-	std::cout << "Generate random order? y or n:\n";
-
-	const std::vector<std::string> orderTypeList = { "market", "limit" };
 	const std::vector<std::string> tickerList = { "XAU/USD", "XAG/USD" };
-	const std::vector<std::string> cptyList = { "JPM", "ML", "BAML", "GS", "NOM", "DB" };
-	const std::vector<std::string> sideList = { "buy", "sell" };
-	std::chrono::high_resolution_clock::time_point timePoint = std::chrono::high_resolution_clock::now();
+	const std::vector<std::string> cptyList = { "TD", "JPM", "ML", "BAML", "GS", "NOM", "DB" };
 
-	OrderBook orderBook("XAU/USD", 10);
+	//1. Create an exchange
+	OrderBook Gold("XAU/USD", 10);
 
-	std::cin >> randFlag;
-	if (randFlag == "n") {
-		std::cout << "Who are you?\n";
-		std::cin >> counterparty;
-		std::cout << "ticker: \n";
-		std::cin >> ticker;
-		std::cout << "Level: \n";
-		std::cin >> level;
-		std::cout << "Side: \n";
-		std::cin >> side;
-		std::cout << "Amount: \n";
-		std::cin >> origAmt;
-	}
-	else if (randFlag == "y") {
-		int numberOfOrders;
-		std::cout << "How many orders to you want to generate?" << std::endl;
-		std::cin >> numberOfOrders;
-		int ID=0;
-		bool firstSell = true;
-		bool firstBuy = true;
-		while (ID < numberOfOrders) {
-			//orderType = orderTypeList[std::rand() % (orderTypeList.end() - orderTypeList.begin())];
-			orderType = "limit";
-			ticker = tickerList[std::rand() % (tickerList.end() - tickerList.begin())];
-			counterparty = cptyList[std::rand() % (cptyList.end() - cptyList.begin())];
-			side = sideList[std::rand() % (sideList.end() - sideList.begin())];
-			origAmt = std::rand() % 10000;
-			level=0;
-			if (side == "sell")
-				//int randNum = rand() % (max - min + 1) + min;
-				level = std::rand() % ( orderBook.getMinOffer() - 0 + 1) + orderBook.getMinOffer();
-			if (side == "buy")
-				level = std::rand() % (100 - orderBook.getMaxBid() + 1 ) + orderBook.getMaxBid();
+	//2. Create some counterparties & add them as members to the orderbook
+	Counterparty TD("TD");
+	Counterparty JPML("JPML");
+	
+	Gold.addCounterparty(TD);
+	Gold.addCounterparty(JPML);
 
-			time_stamp arriveTime = std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::system_clock::now());
-			Order order(orderType, ticker, counterparty, level, arriveTime, side, origAmt);
-			//order.printOrder();
-			if (order.getOrderType() == "limit") {
-				orderBook.addLimitOrder(order);
-			}
-			else orderBook.addMarketOrder(order);
+	//int maxBid = Gold.getMaxBid();
+	
+	
+	//TD.placeOrder();
 
-			ID++;
-		}
-	}
-	orderBook.printOrderBook();
+	
+	//orderBook.addCounterparty("BAML");
+	//orderBook.printOrderBook();
 
 	return 0;
  }
