@@ -1,10 +1,10 @@
 #include <chrono>
 #include <iostream>
-#include "Counterparty.h"
+#include "counterparty.h"
 
-Counterparty::Counterparty(std::string name):m_name(name) {}
+Counterparty::Counterparty(const std::string& name):m_name(name) {}
 
-void Counterparty::placeOrder(int orderLevel, OrderBook book) {
+void Counterparty::placeOrder(int orderLevel, OrderBook* book) {
 
 		std::string side;
 		int origAmt;
@@ -20,15 +20,16 @@ void Counterparty::placeOrder(int orderLevel, OrderBook book) {
 		side = sideList[std::rand() % (sideList.end() - sideList.begin())];
 		origAmt = std::rand() % 10000;
 
-		//level = 0;
-		//if (side == "sell")
-		//	level = std::rand() /*% (orderBook.getMinOffer() + 1) + orderBook.getMinOffer()*/;
-		//if (side == "buy")
-		//	level = std::rand() /*% (100 - OrderBook::getMaxBid() + 1) + OrderBook::getMaxBid()*/;
+		level = 0;
+		if (side == "sell")
+			level = (book->getMinOffer() + 1) + book->getMinOffer();
+		if (side == "buy")
+			level = std::rand() /*% (100 - OrderBook::getMaxBid() + 1) + OrderBook::getMaxBid()*/;
 
 		time_stamp arriveTime = std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::system_clock::now());
-		Order order(orderType, ticker, name, level, arriveTime, side, origAmt);
-//		orderBook->addLimitOrder(order);
+		Order order(m_name, orderType, ticker, level, side, origAmt);
+		
+		book->addLimitOrder(order);
 		
 		//orderNum++;
 

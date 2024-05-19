@@ -1,4 +1,4 @@
-#include "orderBook.h"
+#include "orderbook.h"
 #include <iostream>
 #include <algorithm>
 
@@ -19,6 +19,8 @@ void OrderBook::addCounterparty(Counterparty cpty) {
 }
 
 void OrderBook::addLimitOrder(Order order) {	
+	order.setArrivalTime();
+
 	//Add order and sort the stacks by level and ordertime
 	if (order.getSide() == "buy") {
 		bidStack.push_back(order);
@@ -44,6 +46,8 @@ void OrderBook::addLimitOrder(Order order) {
 }
 
 void OrderBook::addMarketOrder(Order order) {
+	order.setArrivalTime();
+
 	if (order.getSide() == "buy") {
 		for (auto i : offerStack) {
 			if (i.getNotional() > order.getNotional()) {

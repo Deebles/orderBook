@@ -1,10 +1,11 @@
 #pragma once
-#include "Order.h"
+#include "order.h"
 #include <vector>
 #include <string>
-#include<list>
+#include <list>
 
-#include "Counterparty.h"
+#include "counterparty.h"
+#include "order.h"
 
 class Counterparty;
 

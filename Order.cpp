@@ -1,24 +1,24 @@
-#include "Order.h"
+#include "order.h"
 #include <iostream>
 #include <iomanip>
 #include <chrono>
 //#include <ctime>
 
 Order::Order(
-	std::string orderType,
-	std::string ticker,
-	std::string cpty,
+	const std::string& cpty,
+	const std::string& orderType,
+	const std::string& ticker,
 	int level,
-	time_stamp arriveTime,
-	std::string side,
+	const std::string& side,
 	int notional):
+	m_cpty(cpty),
 	m_orderType(orderType),
 	m_ticker(ticker), 
-	m_cpty(cpty),
 	m_level(level),
-	m_arriveTime(arriveTime), 
 	m_side(side), 
-	m_notional(notional){}
+	m_notional(notional)
+{
+}
 
 void Order::fillOrder(int fillAmount) {
 	m_notional = m_notional - fillAmount;
@@ -27,7 +27,7 @@ void Order::fillOrder(int fillAmount) {
 void Order::printOrder() 
 	{
 	//std::time_t printableArrivalTime = std::chrono::system_clock::to_time_t(m_arriveTime);
-	std::cout << m_level << " | " << m_orderType << " | " << m_ticker << " | " << m_cpty << " | ";
+	std::cout << m_level << " | " << m_orderType << " | " << m_ticker << " | " << m_cpty.getName() << " | ";
 	std::cout /*<< m_arriveTime << " | " */ << m_side << " | " << m_notional << std::endl;
 	}
 
@@ -54,5 +54,9 @@ std::string Order::getOrderType() {
 
 time_stamp Order::getArriveTime() {
 	return m_arriveTime;
+}
+
+void Order::setArrivalTime() {
+	time_stamp m_arrivalTime = std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::system_clock::now());
 }
 
