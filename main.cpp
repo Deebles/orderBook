@@ -2,9 +2,9 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
-#include "Order.h"
-#include "orderBook.h"
-#include "Counterparty.h"
+#include "order.h"
+#include "orderbook.h"
+#include "counterparty.h"
 
 int main()
 {
@@ -22,24 +22,25 @@ int main()
 	const std::vector<std::string> tickerList = { "XAU/USD", "XAG/USD" };
 	const std::vector<std::string> cptyList = { "TD", "JPM", "ML", "BAML", "GS", "NOM", "DB" };
 
-	//1. Create an exchange
-	OrderBook Gold("XAU/USD", 10);
+	std::string xau = tickerList[0];
+
+	//1. Create an order book. There is one order book per contract.
+	auto ob = std::make_shared<OrderBook> ();
 
 	//2. Create some counterparties & add them as members to the orderbook
 	Counterparty TD("TD");
 	Counterparty JPML("JPML");
 	
-	Gold.addCounterparty(TD);
-	Gold.addCounterparty(JPML);
+	ob->addCounterparty(TD);
+	ob->addCounterparty(JPML);
 
-	//int maxBid = Gold.getMaxBid();
+	auto GoldBook = OrderBook();
 	
-	
-	//TD.placeOrder();
+	GoldBook.addCounterparty(TD);
 
-	
-	//orderBook.addCounterparty("BAML");
-	//orderBook.printOrderBook();
+	auto anOrder = Order(TD, "limit", "XAU/USD", 1800, "Buy", 100);
+
+	GoldBook.addLimitOrder(anOrder);
 
 	return 0;
  }
